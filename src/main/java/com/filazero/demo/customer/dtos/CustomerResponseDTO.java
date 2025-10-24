@@ -10,6 +10,6 @@ public record CustomerResponseDTO(
 Long id,
 String username,
 ProfileResponseDTO profile,
-Set<RoleResponseDTO> roles
+RoleResponseDTO role // for many roles Set<RoleResponseDTO> roles
 
 ) {} 

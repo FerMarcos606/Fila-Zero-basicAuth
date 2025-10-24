@@ -4,6 +4,13 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
+package com.filazero.demo.customer;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
@@ -14,42 +21,43 @@ public class CustomerController {
     // GET → todos los clientes
     @GetMapping
     public List<CustomerResponseDTO> getAll() {
-        return customerService.findAll();
+        return customerService.getEntities();
     }
 
     // GET → cliente por id
     @GetMapping("/{id}")
     public CustomerResponseDTO getById(@PathVariable Long id) {
-        return customerService.findById(id);
+        return customerService.getByID(id);
     }
 
     // POST → crear cliente
     @PostMapping
     public CustomerResponseDTO create(@RequestBody CustomerRequestDTO dto) {
-        return customerService.create(dto);
+        return customerService.createEntity(dto);
     }
 
     // PUT → actualizar cliente
     @PutMapping("/{id}")
     public CustomerResponseDTO update(@PathVariable Long id, @RequestBody CustomerRequestDTO dto) {
-        return customerService.update(id, dto);
+        return customerService.updateEntity(id, dto);
     }
 
+    // DELETE → eliminar cliente
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        customerService.delete(id);
+        customerService.deleteEntity(id);
     }
 
-    // for future oferts search customer by username
+    // GET → buscar cliente por username (future offers)
     @GetMapping("/search")
     public List<CustomerResponseDTO> searchByName(@RequestParam String name) {
         return customerService.searchByName(name);
     }
 
-    //Search cusotmer by email
+    // GET → buscar cliente por email
     @GetMapping("/email")
     public CustomerResponseDTO getByEmail(@RequestParam String email) {
         return customerService.getByEmail(email);
     }
-
 }
+

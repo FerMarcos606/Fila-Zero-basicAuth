@@ -8,10 +8,6 @@ import com.filazero.demo.profile.dtos.ProfileResponseDTO;
 import com.filazero.demo.role.RoleEntity;
 import com.filazero.demo.role.dtos.RoleResponseDTO;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class CustomerMapper {
@@ -26,10 +22,10 @@ public class CustomerMapper {
     public CustomerResponseDTO toResponseDTO(CustomerEntity entity) {
         if (entity == null) return null;
 
-        Set<RoleResponseDTO> roles = Stream.of(entity.getRole())
-            .filter(Objects::nonNull)
-            .map(role -> new RoleResponseDTO(role.getId_role(), role.getName()))
-            .collect(Collectors.toSet());
+        RoleResponseDTO roleDTO = null;
+        if (entity.getRole() != null) {
+            roleDTO = new RoleResponseDTO(entity.getRole().getId_role(), entity.getRole().getName());
+        }
 
         ProfileResponseDTO profileDTO = profileMapper.toResponseDTO(entity.getProfile());
 
@@ -37,12 +33,11 @@ public class CustomerMapper {
             entity.getId(),
             entity.getUsername(),
             profileDTO,
-            roles
+            roleDTO //no set role
         );
     }
 
-    // Convertir CustomerRequestDTO → CustomerEntity (requiere RoleEntity)
-    public CustomerEntity toEntity(CustomerRequestDTO dto, RoleEntity role) {
+     public CustomerEntity toEntity(CustomerRequestDTO dto, RoleEntity role) {
         if (dto == null) return null;
 
         CustomerEntity entity = new CustomerEntity();
@@ -53,7 +48,6 @@ public class CustomerMapper {
         return entity;
     }
 
-    // Actualizar CustomerEntity con CustomerRequestDTO
     public void updateEntityFromDTO(CustomerRequestDTO dto, CustomerEntity entity, RoleEntity role) {
         if (dto.username() != null) entity.setUsername(dto.username());
         if (dto.email() != null) entity.setEmail(dto.email());
@@ -61,15 +55,16 @@ public class CustomerMapper {
         if (role != null) entity.setRole(role);
     }
 
-    // Convertir CustomerEntity → CustomerRequestDTO
     public CustomerRequestDTO toRequestDTO(CustomerEntity entity) {
         if (entity == null) return null;
+
+        Long roleId = (entity.getRole() != null) ? entity.getRole().getId_role() : null;
 
         return new CustomerRequestDTO(
             entity.getUsername(),
             entity.getEmail(),
             entity.getPassword(),
-            entity.getRole().getId_role()
+            roleId
         );
     }
 }

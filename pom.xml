@@ -107,6 +107,14 @@
         <artifactId>spring-security-oauth2-jose</artifactId>
     </dependency>
 
+        <dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>5.9.3</version> <!-- o la versión que uses -->
+    <scope>test</scope>
+</dependency>
+
+
     </dependencies>
 
     

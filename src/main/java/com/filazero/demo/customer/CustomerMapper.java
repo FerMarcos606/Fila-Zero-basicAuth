@@ -32,6 +32,7 @@ public class CustomerMapper {
         return new CustomerResponseDTO(
             entity.getId(),
             entity.getUsername(),
+            entity.getEmail(),  
             profileDTO,
             roleDTO //no set role
         );

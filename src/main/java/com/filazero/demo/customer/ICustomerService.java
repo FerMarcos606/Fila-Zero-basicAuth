@@ -9,5 +9,6 @@ import com.filazero.demo.implementations.IService;
 public interface ICustomerService extends IService<CustomerResponseDTO, CustomerRequestDTO> {
 
     CustomerResponseDTO getByEmail(String email);
+    CustomerResponseDTO getByPhoneNumber(String phoneNumber);
     List<CustomerResponseDTO> searchByName(String name);
 }

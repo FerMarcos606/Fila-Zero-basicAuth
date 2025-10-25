@@ -10,8 +10,6 @@ import com.filazero.demo.customer.dtos.CustomerResponseDTO;
 import com.filazero.demo.role.RoleEntity;
 import com.filazero.demo.role.RoleRepository;
 
-
-
 @Service
 public class CustomerServiceImpl implements ICustomerService {
 
@@ -35,6 +33,14 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public CustomerResponseDTO createEntity(CustomerRequestDTO dto) {
+        // Validar duplicados
+        if (customerRepository.findByEmail(dto.email()).isPresent()) {
+            throw new IllegalArgumentException("Email ya registrado");
+        }
+        if (!customerRepository.findByUsernameContainingIgnoreCase(dto.username()).isEmpty()) {
+            throw new IllegalArgumentException("Username ya registrado");
+        }
+
         RoleEntity role = roleRepository.findById(dto.roleId())
                 .orElseThrow(() -> new EntityNotFoundException("Role not found"));
 
@@ -82,4 +88,13 @@ public class CustomerServiceImpl implements ICustomerService {
                 .map(customerMapper::toResponseDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
     }
+
+    // Opcional: buscar por phoneNumber desde Profile
+    public CustomerResponseDTO getByPhoneNumber(String phoneNumber) {
+        return customerRepository.findByProfile_PhoneNumber(phoneNumber)
+                .map(customerMapper::toResponseDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+    }
 }
+
+

@@ -1,19 +1,21 @@
-package com.filazero.demo.Auth;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+// @RestController
+// @RequestMapping(path = "${api-endpoint}/auth")
+// public class AuthController {
 
-public record LoginRequestDTO (
-    
-    
-    @NotBlank(message = "El email es obligatorio para iniciar sesión.")
-    @Email(message = "El formato del email es inválido.")
-    String email, 
+//     private final TokenService tokenService;
 
+//     public AuthController(TokenService tokenService) {
+//         this.tokenService = tokenService;
+//     }
 
-    @NotBlank(message = "La contraseña es obligatoria.")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres.") 
-    String password
-    )
-{}
+//     @PostMapping("/token")
+//     public String token(Authentication authentication) {
+//         return tokenService.generateToken(authentication);
+//     }
+
+// }

@@ -3,18 +3,21 @@ package com.filazero.demo.delivery.dtos;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record DeliveryRequestDTO(
+import com.filazero.demo.enums.DeliveryStatus;
+
+public record DeliveryResponseDTO(
+    Long id,
     Long customerId,
     Long turnId,
-    String phoneNumber,
     List<DetailDeliveryDTO> details,
+    DeliveryStatus status,
     Boolean paid,
+    LocalDateTime createdAt,
     LocalDateTime assignedSlot,
     LocalDateTime rescheduledSlot,
     Boolean wasRescheduled,
     Integer queuePosition,
     LocalDateTime cancelableUntil,
-    String thankYouMessage
-    
+    String thankYouMessage,
+    List<NotificationDTO> notifications
 ) {}
-

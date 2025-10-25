@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.filazero.demo.customer.CustomerEntity;
 import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
+import com.filazero.demo.enums.DeliveryStatus;
 import com.filazero.demo.nofications.NotificationsEntity;
 import com.filazero.demo.turns.TurnsEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,21 +48,20 @@ public class DeliveryEntity {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime scheduledSlot;
+        // Turno asignado
+    private LocalDateTime assignedSlot;
 
+    // nuevo turno
     private LocalDateTime rescheduledSlot;
 
+        //turno reprogramado
     private Boolean wasRescheduled;
 
     private Integer queuePosition;
 
     private LocalDateTime cancelableUntil;
 
-    private LocalDateTime pickupTime;
-
-    private String confirmationCode;
-
-    private String thankYouMessage;
+   private String thankYouMessage;
 
     @OneToMany(mappedBy = "delivery")
     private List<NotificationsEntity> notifications;

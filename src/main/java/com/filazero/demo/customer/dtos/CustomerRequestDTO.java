@@ -2,6 +2,7 @@ package com.filazero.demo.customer.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CustomerRequestDTO(
@@ -18,5 +19,7 @@ public record CustomerRequestDTO(
     @Size(min = 8, message = "Debe tener al menos 8 caracteres")
     String password,
 
-    Long roleId // ID del rol / customer
+    @NotNull(message = "El rol es obligatorio")
+    Long roleId
+
 ) {}

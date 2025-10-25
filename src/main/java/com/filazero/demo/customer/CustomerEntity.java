@@ -55,6 +55,7 @@ public class CustomerEntity {
     private ProfileEntity profile;
 
     // Many custome can have same role(customer).
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role;

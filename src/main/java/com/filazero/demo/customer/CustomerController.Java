@@ -1,15 +1,13 @@
 package com.filazero.demo.customer;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.filazero.demo.customer.dtos.CustomerRequestDTO;
+import com.filazero.demo.customer.dtos.CustomerResponseDTO;
+
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
-package com.filazero.demo.customer;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -60,4 +58,3 @@ public class CustomerController {
         return customerService.getByEmail(email);
     }
 }
-

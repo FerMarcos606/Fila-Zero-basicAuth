@@ -36,15 +36,6 @@ public class RoleEntity {
     @Column(nullable = false, unique = true, length = 50)
     private String name; 
 
-   
-    // RELAtion MANY-TO-MANY INVERTED ---    
-   
-    // @ManyToMany(mappedBy = "roles")
-    // @Builder.Default /**
-    //  *
-    //  */
-    // private Set<CustomerEntity> customers = new HashSet<>();
-
     @OneToMany(mappedBy = "role")
     private Set<CustomerEntity> customer = new HashSet<>();
 

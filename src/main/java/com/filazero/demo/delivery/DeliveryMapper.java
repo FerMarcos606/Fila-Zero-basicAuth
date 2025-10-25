@@ -1,8 +1,8 @@
 package com.filazero.demo.delivery;
-
 import com.filazero.demo.delivery.dtos.DeliveryRequestDTO;
 import com.filazero.demo.delivery.dtos.DeliveryResponseDTO;
-import com.filazero.demo.profile.ProfileEntity;
+import java.time.LocalDateTime;
+
 
 public class DeliveryMapper {
 
@@ -10,7 +10,7 @@ public class DeliveryMapper {
         DeliveryEntity delivery = new DeliveryEntity();
 
         delivery.setPaid(dtoRequest.paid());
-        delivery.setCreatedAt(dtoRequest.createdAt());
+        delivery.setCreatedAt(LocalDateTime.now());
         delivery.setAssignedSlot(dtoRequest.assignedSlot());
         delivery.setRescheduledSlot(dtoRequest.rescheduledSlot());
         delivery.setWasRescheduled(dtoRequest.wasRescheduled());
@@ -36,7 +36,7 @@ public class DeliveryMapper {
             entity.getQueuePosition(),
             entity.getCancelableUntil(),
             entity.getThankYouMessage(),
-            null // notifications, podés mapearlos si tenés NotificationDTO
+            null 
         );
     }
 }

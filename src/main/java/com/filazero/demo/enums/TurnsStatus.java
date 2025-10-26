@@ -4,5 +4,6 @@ public enum TurnsStatus {
     EN_ESPERA,
     ASIGNADO,
     RETIRADO,
-    NO_RETIRADO
+    REASIGNADO,
+    CANCELADO
 }

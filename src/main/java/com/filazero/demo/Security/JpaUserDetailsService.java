@@ -4,6 +4,26 @@ import org.springframework.stereotype.Service;
  
 import com.filazero.demo.customer.CustomerRepository;
 
+ NotificationsEntity
+// @Service
+// public class JpaUserDetailsService implements CustomerDetailsService {
+
+//         private CustomerRepository customerRepository;
+
+//     public JpaUserDetailsService(CustomerRepository userRepository) {
+//         this.customerCustomerRepository = customerRepository;
+//     }
+
+//         @Override
+//     public CustomerDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+
+//         return userRepository.findByEmail(email)
+//                 .map(SecurityCustomer::new)
+//                 .orElseThrow(() -> new UserNotFoundException("User not found with this email"));
+
+//     }
+// }=======
 @Service
 public class JpaUserDetailsService implements CustomerDetailsService {
 
@@ -23,3 +43,5 @@ public class JpaUserDetailsService implements CustomerDetailsService {
 
     }
 }
+
+

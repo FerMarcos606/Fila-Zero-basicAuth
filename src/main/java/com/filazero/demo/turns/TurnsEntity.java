@@ -1,39 +1,47 @@
 package com.filazero.demo.turns;
 
+import com.filazero.demo.delivery.DeliveryEntity;
+import com.filazero.demo.enums.TurnsStatus;
+
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
-
-import com.filazero.demo.customer.CustomerEntity;
 
 @Entity
 @Table(name = "turns")
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class TurnsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+   //Code for customer
+    @Column(unique = true, nullable = false)
+    private String code;
+    
     @Column(nullable = false)
-    private Integer number;
+    private LocalDateTime startTime;
 
-    @Column(nullable = true)
-    private LocalDateTime datetime;
+   
+    @Column(nullable = false)
+    private LocalDateTime endTime;
 
     @Column(nullable = false)
-    private String status; // Ej: "pendiente", "asignado", "completado"
+    private LocalDateTime timeSlot;
 
-    @Column(nullable = true)
-    private LocalDateTime deadline;
+  
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TurnsStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id") 
-    private CustomerEntity customer;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_id", unique = true)
+    private DeliveryEntity delivery;
 
+   
 }

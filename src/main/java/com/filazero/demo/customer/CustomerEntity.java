@@ -6,7 +6,7 @@ import java.util.Set;
 import com.filazero.demo.role.RoleEntity;
 import com.filazero.demo.turns.TurnsEntity;
 import com.filazero.demo.delivery.DeliveryEntity;
-import com.filazero.demo.nofications.NotificationsEntity;
+import com.filazero.demo.notifications.NotificationsEntity;
 import com.filazero.demo.profile.ProfileEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

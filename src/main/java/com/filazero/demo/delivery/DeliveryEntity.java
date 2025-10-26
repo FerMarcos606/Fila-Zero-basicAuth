@@ -1,7 +1,7 @@
 package com.filazero.demo.delivery;
 
 import com.filazero.demo.customer.CustomerEntity;
-import com.filazero.demo.nofications.NotificationsEntity;
+import com.filazero.demo.notifications.NotificationsEntity;
 import com.filazero.demo.turns.TurnsEntity;
 import com.filazero.demo.enums.DeliveryStatus;
 import jakarta.persistence.*;

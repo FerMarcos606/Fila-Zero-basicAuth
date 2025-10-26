@@ -11,7 +11,7 @@ public record NotificationsResponseDTO(
     
     Long deliveryId, // Puede ser null
     
-    TypeNotificationsResponseDTO typeNotification,
+    TypeNotificationsResponseDTO typeNotifications,
     
     LocalDateTime datetime,
     

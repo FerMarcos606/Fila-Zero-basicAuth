@@ -7,7 +7,6 @@ import com.filazero.demo.typeNotifications.TypeNotificationsMapper;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Component
 @RequiredArgsConstructor
 public class NotificationsMapper {

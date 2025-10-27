@@ -1,25 +1,27 @@
 package com.filazero.demo.security;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
- 
+
+import com.filazero.demo.customer.CustomerEntity;
 import com.filazero.demo.customer.CustomerRepository;
 
-// @Service
-// public class JpaUserDetailsService implements CustomerDetailsService {
+import lombok.RequiredArgsConstructor;
 
-//         private CustomerRepository customerRepository;
+@RequiredArgsConstructor
+@Service
+public class JpaUserDetailsService implements UserDetailsService {
+   
+    private final CustomerRepository customerRepository;
 
-//     public JpaUserDetailsService(CustomerRepository userRepository) {
-//         this.customerCustomerRepository = customerRepository;
-//     }
+   @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    CustomerEntity customer = customerRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("Customer not found with email: " + email));
 
-//         @Override
-//     public CustomerDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    return new SecurityUser(customer); // SecurityCustomer implements UserDetails
+}
 
-
-//         return userRepository.findByEmail(email)
-//                 .map(SecurityCustomer::new)
-//                 .orElseThrow(() -> new UserNotFoundException("User not found with this email"));
-
-//     }
-// }
+}

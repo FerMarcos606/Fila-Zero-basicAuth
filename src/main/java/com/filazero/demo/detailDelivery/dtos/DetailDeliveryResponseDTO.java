@@ -1,5 +1,16 @@
 package com.filazero.demo.detailDelivery.dtos;
 
-public record DetailDeliveryResponseDTO() {
-    
-}
+import java.math.BigDecimal;
+
+public record DetailDeliveryResponseDTO(
+    Long id,
+    Long deliveryId,
+    Long productId,
+    String productName, 
+    String productDescription,
+    Integer quantity,
+    BigDecimal unitPrice,
+    BigDecimal subtotal
+) {}
+
+

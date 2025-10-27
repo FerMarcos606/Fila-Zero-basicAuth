@@ -11,13 +11,7 @@ public class DeliveryMapper {
 
         delivery.setPaid(dtoRequest.paid());
         delivery.setCreatedAt(LocalDateTime.now());
-        delivery.setAssignedSlot(dtoRequest.assignedSlot());
-        delivery.setRescheduledSlot(dtoRequest.rescheduledSlot());
-        delivery.setWasRescheduled(dtoRequest.wasRescheduled());
-        delivery.setQueuePosition(dtoRequest.queuePosition());
-        delivery.setCancelableUntil(dtoRequest.cancelableUntil());
-        delivery.setThankYouMessage(dtoRequest.thankYouMessage());
-
+        
         return delivery;
     }
 

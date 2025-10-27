@@ -1,5 +1,7 @@
 package com.filazero.demo.queue;
 
+import java.time.LocalDateTime;
+
 import com.filazero.demo.delivery.DeliveryEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +25,9 @@ public class QueueEntity {
 
     // estimated hour delivery retired
     private java.time.LocalDateTime estimatedTime;
+
+    @Column(nullable = false)
+    private LocalDateTime deadline;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id", nullable = false, unique = true)

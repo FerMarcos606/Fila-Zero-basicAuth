@@ -1,12 +1,15 @@
 package com.filazero.demo.delivery;
 
 import com.filazero.demo.customer.CustomerEntity;
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
 import com.filazero.demo.notifications.NotificationsEntity;
+import com.filazero.demo.queue.QueueEntity;
 import com.filazero.demo.turns.TurnsEntity;
 import com.filazero.demo.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,6 +44,10 @@ public class DeliveryEntity {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
+    @Column(nullable = false)
+    private BigDecimal total; // 💰 nuevo campo total del pedido
+
+    // Relaciones
     @ManyToOne(optional = false)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
@@ -49,14 +56,16 @@ public class DeliveryEntity {
     @JoinColumn(name = "turn_id")
     private TurnsEntity turn;
 
-    @OneToMany(mappedBy = "delivery")
+    // Relación con QueueEntity
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private QueueEntity queue;
+
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<NotificationsEntity> notifications;
 
-    // Si tenés detalles, agregalos también:
-    // @OneToMany(mappedBy = "delivery")
-    // private List<DetailDeliveryEntity> details;
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DetailDeliveryEntity> details;
 }
-
 
 
 

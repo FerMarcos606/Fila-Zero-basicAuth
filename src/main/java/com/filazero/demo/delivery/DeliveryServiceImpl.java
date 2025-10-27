@@ -1,6 +1,5 @@
 package com.filazero.demo.delivery;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,24 +9,29 @@ import com.filazero.demo.customer.CustomerEntity;
 import com.filazero.demo.customer.CustomerRepository;
 import com.filazero.demo.delivery.dtos.DeliveryRequestDTO;
 import com.filazero.demo.delivery.dtos.DeliveryResponseDTO;
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
+import com.filazero.demo.enums.DeliveryStatus;
+import com.filazero.demo.products.ProductRepository;
+import com.filazero.demo.turns.ITurnsService;
 import com.filazero.demo.turns.TurnsEntity;
-import com.filazero.demo.turns.TurnsRepository;
 
 @Service("deliveryService")
-@Transactional
 public class DeliveryServiceImpl implements InterfaceDeliveryService {
 
     private final DeliveryRepository deliveryRepository;
     private final CustomerRepository customerRepository;
-    private final TurnsRepository turnsRepository;
+    private final ProductRepository productRepository;
+    private final ITurnsService turnService;
 
     public DeliveryServiceImpl(
             DeliveryRepository deliveryRepository,
             CustomerRepository customerRepository,
-            TurnsRepository turnsRepository) {
-        this.deliveryRepository = deliveryRepository;
-        this.customerRepository = customerRepository;
-        this.turnsRepository = turnsRepository;
+            ProductRepository productRepository,
+            ITurnsService turnService) {
+            this.deliveryRepository = deliveryRepository;
+            this.customerRepository = customerRepository;
+            this.productRepository = productRepository;
+            this.turnService = turnService;
     }
 
     @Override
@@ -38,21 +42,35 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
     }
 
     @Override
+    @Transactional
     public DeliveryResponseDTO createEntity(DeliveryRequestDTO deliveryRequestDTO) {
-        if (deliveryRequestDTO.phoneNumber() == null) {
-            throw new IllegalArgumentException("El número de teléfono no puede ser nulo");
+        // Buscar customer
+        CustomerEntity customer = customerRepository.findById(deliveryRequestDTO.customerId())
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + deliveryRequestDTO.customerId()));
+
+        // Crear delivery con estado PENDING por defecto
+        DeliveryEntity delivery = new DeliveryEntity();
+        delivery.setCustomer(customer);
+        delivery.setPaid(deliveryRequestDTO.paid() != null ? deliveryRequestDTO.paid() : false);
+        delivery.setStatus(DeliveryStatus.PENDING); // PENDING debe estar definido en tu enum DeliveryStatus
+
+        // Asignar detalles de delivery si hay productos
+        if (deliveryRequestDTO.details() != null && !deliveryRequestDTO.details().isEmpty()) {
+            List<DetailDeliveryEntity> details = deliveryRequestDTO.details().stream().map(item -> {
+                var product = productRepository.findById(item.productId())
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + item.productId()));
+                var detail = new DetailDeliveryEntity();
+                detail.setProduct(product);
+                detail.setQuantity(item.quantity());
+                detail.setDelivery(delivery);
+                return detail;
+            }).toList();
+            delivery.setDetails(details);
         }
 
-        CustomerEntity customer = customerRepository.findById(deliveryRequestDTO.customerId())
-        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con id: " + deliveryRequestDTO.customerId()));
-
-
-        TurnsEntity turn = turnsRepository.findById(deliveryRequestDTO.turnId())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado con id: " + deliveryRequestDTO.turnId()));
-
-        DeliveryEntity delivery = DeliveryMapper.toEntity(deliveryRequestDTO);
-        delivery.setCustomer(customer);
-        delivery.setTurn(turn);
+        // Asignar turno (stub por ahora, se completará con automatizaciones)
+        // TurnsEntity turn = turnService.asignarTurno(); // 
+        // delivery.setTurn(turn);
 
         DeliveryEntity saved = deliveryRepository.save(delivery);
         return DeliveryMapper.toDTO(saved);
@@ -69,28 +87,9 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
     public DeliveryResponseDTO updateEntity(Long id, DeliveryRequestDTO deliveryRequestDTO) {
         DeliveryEntity delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Entrega no encontrada con id: " + id));
-
-        CustomerEntity customer = customerRepository.findByProfile_PhoneNumber(deliveryRequestDTO.phoneNumber())
-    .orElseThrow(() -> new RuntimeException("Cliente no encontrado con teléfono: " + deliveryRequestDTO.phoneNumber()));
-
-
-        TurnsEntity turn = turnsRepository.findById(deliveryRequestDTO.turnId())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado con id: " + deliveryRequestDTO.turnId()));
-
-        // Actualizar campos
-        delivery.setCustomer(customer);
-        delivery.setTurn(turn);
+        // Actualización mínima para Postman, detalles se pueden agregar luego
         delivery.setPaid(deliveryRequestDTO.paid());
-        delivery.setCreatedAt(LocalDateTime.now());
-        delivery.setAssignedSlot(deliveryRequestDTO.assignedSlot());
-        delivery.setRescheduledSlot(deliveryRequestDTO.rescheduledSlot());
-        delivery.setWasRescheduled(deliveryRequestDTO.wasRescheduled());
-        delivery.setQueuePosition(deliveryRequestDTO.queuePosition());
-        delivery.setCancelableUntil(deliveryRequestDTO.cancelableUntil());
-        delivery.setThankYouMessage(deliveryRequestDTO.thankYouMessage());
-
-        DeliveryEntity updated = deliveryRepository.save(delivery);
-        return DeliveryMapper.toDTO(updated);
+        return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
     }
 
     @Override
@@ -102,17 +101,16 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
 
     @Override
     public List<DeliveryResponseDTO> getByPhoneNumber(String phoneNumber) {
-        List<DeliveryEntity> deliveries = deliveryRepository.findByCustomer_Profile_PhoneNumber(phoneNumber);
-        return deliveries.stream()
-                .map(DeliveryMapper::toDTO)
-                .toList();
+        // Por ahora devuelve vacío hasta que tengamos relación phoneNumber → CustomerEntity
+        return List.of();
     }
 
     @Override
     public List<DeliveryResponseDTO> searchByCustomerName(String name) {
-        List<DeliveryEntity> deliveries = deliveryRepository.findByCustomer_Profile_NameContainingIgnoreCase(name);
-        return deliveries.stream()
-                .map(DeliveryMapper::toDTO)
-                .toList();
-    }
+    List<DeliveryEntity> deliveries = deliveryRepository.findByCustomer_Profile_NameContainingIgnoreCase(name);
+    return deliveries.stream()
+                     .map(DeliveryMapper::toDTO)
+                     .toList();
+}
+
 }

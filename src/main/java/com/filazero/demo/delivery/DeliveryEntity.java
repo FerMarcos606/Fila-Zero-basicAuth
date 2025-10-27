@@ -1,14 +1,18 @@
 package com.filazero.demo.delivery;
 
-import com.filazero.demo.customer.CustomerEntity;
-import com.filazero.demo.nofications.NotificationsEntity;
-import com.filazero.demo.turns.TurnsEntity;
-import com.filazero.demo.enums.DeliveryStatus;
-import jakarta.persistence.*;
-import lombok.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.filazero.demo.customer.CustomerEntity;
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
+import com.filazero.demo.enums.DeliveryStatus;
+import com.filazero.demo.nofications.NotificationsEntity;
+import com.filazero.demo.turns.TurnsEntity;
+import com.filazero.demo.queue.QueueEntity;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "deliveries")
@@ -16,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DeliveryEntity {
 
     @Id
@@ -41,22 +46,26 @@ public class DeliveryEntity {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
-    @ManyToOne(optional = false)
+    @Column(nullable = false)
+    private BigDecimal total;
+
+    // Relaciones
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "turn_id")
     private TurnsEntity turn;
 
-    @OneToMany(mappedBy = "delivery")
+    // Relación con QueueEntity: Delivery "posee" la Queue (mappedBy en Queue)
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private QueueEntity queue;
+
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<NotificationsEntity> notifications;
 
-    // Si tenés detalles, agregalos también:
-    // @OneToMany(mappedBy = "delivery")
-    // private List<DetailDeliveryEntity> details;
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DetailDeliveryEntity> details;
 }
-
-
-
-

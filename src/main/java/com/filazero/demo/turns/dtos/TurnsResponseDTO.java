@@ -8,6 +8,7 @@ public record TurnsResponseDTO(
     String code,
     LocalDateTime startTime,
     LocalDateTime endTime,
+    LocalDateTime deadline,
     LocalDateTime timeSlot,
     String status
 ) {}

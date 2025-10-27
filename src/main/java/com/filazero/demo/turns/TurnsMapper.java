@@ -10,6 +10,7 @@ public class TurnsMapper {
             entity.getStartTime(),
             entity.getEndTime(),
             entity.getTimeSlot(),
+            entity.getDeadline(),
             entity.getStatus() != null ? entity.getStatus().name() : null
         );
     }

@@ -1,5 +1,10 @@
 package com.filazero.demo.detailDelivery.dtos;
 
-public record DetailDeliveryRequestDTO() {
+import jakarta.validation.constraints.NotNull;
+
+public record DetailDeliveryRequestDTO(
     
-}
+    @NotNull Long productId,
+    @NotNull Integer quantity
+) {}
+

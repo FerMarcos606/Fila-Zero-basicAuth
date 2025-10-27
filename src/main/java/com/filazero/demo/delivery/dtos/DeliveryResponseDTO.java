@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.filazero.demo.detailDelivery.dtos.DetailDeliveryResponseDTO;
 import com.filazero.demo.enums.DeliveryStatus;
-import com.filazero.demo.nofications.dtos.NotificationsResponseDTO;
+import com.filazero.demo.notifications.dtos.NotificationsResponseDTO;
 
 public record DeliveryResponseDTO(
     Long id,

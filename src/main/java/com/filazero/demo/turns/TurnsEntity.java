@@ -31,6 +31,9 @@ public class TurnsEntity {
     @Column(nullable = false)
     private LocalDateTime endTime;
 
+     @Column(nullable = false)
+    private LocalDateTime deadline;
+
     @Column(nullable = false)
     private LocalDateTime timeSlot;
 

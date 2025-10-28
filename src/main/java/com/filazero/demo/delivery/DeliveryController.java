@@ -9,7 +9,7 @@ import com.filazero.demo.delivery.dtos.DeliveryRequestDTO;
 import com.filazero.demo.delivery.dtos.DeliveryResponseDTO;
 
 @RestController
-@RequestMapping("/api/deliveries")
+@RequestMapping("${api-endpoint}/deliveries")
 public class DeliveryController {
 
     private final InterfaceDeliveryService deliveryService;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.filazero.demo.turns.dtos.TurnsResponseDTO;
 
 @RestController
-@RequestMapping("/api/turns")
+@RequestMapping("${api-endpoint}/turns")
 public class TurnsController {
 
     private final TurnsServiceImpl turnsService;

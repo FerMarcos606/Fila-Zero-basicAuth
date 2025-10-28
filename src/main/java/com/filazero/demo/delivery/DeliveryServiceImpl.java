@@ -45,8 +45,10 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
     @Transactional
     public DeliveryResponseDTO createEntity(DeliveryRequestDTO deliveryRequestDTO) {
         // Buscar customer
-        CustomerEntity customer = customerRepository.findById(deliveryRequestDTO.customerId())
-                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + deliveryRequestDTO.customerId()));
+       CustomerEntity customer = customerRepository
+        .findByProfile_PhoneNumber(deliveryRequestDTO.phoneNumber())
+        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con teléfono: " + deliveryRequestDTO.phoneNumber()));
+
 
         // Crear delivery con estado PENDING por defecto
         DeliveryEntity delivery = new DeliveryEntity();

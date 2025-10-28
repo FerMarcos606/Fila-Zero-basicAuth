@@ -24,4 +24,4 @@ public class JpaUserDetailsService implements UserDetailsService {
     return new SecurityUser(customer); // SecurityCustomer implements UserDetails
 }
 
-
+}

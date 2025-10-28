@@ -1,6 +1,8 @@
 package com.filazero.demo.delivery;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,8 +12,14 @@ import com.filazero.demo.customer.CustomerEntity;
 import com.filazero.demo.customer.CustomerRepository;
 import com.filazero.demo.delivery.dtos.DeliveryRequestDTO;
 import com.filazero.demo.delivery.dtos.DeliveryResponseDTO;
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
+import com.filazero.demo.detailDelivery.dtos.DeliveryDetailRequestDTO;
+import com.filazero.demo.enums.DeliveryStatus;
+import com.filazero.demo.products.ProductEntity;
 import com.filazero.demo.turns.TurnsEntity;
 import com.filazero.demo.turns.TurnsRepository;
+import com.filazero.demo.products.ProductRepository;
+
 
 @Service("deliveryService")
 @Transactional
@@ -20,16 +28,18 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
     private final DeliveryRepository deliveryRepository;
     private final CustomerRepository customerRepository;
     private final TurnsRepository turnsRepository;
+    private final ProductRepository productRepository; 
 
-    public DeliveryServiceImpl(
-            DeliveryRepository deliveryRepository,
-            CustomerRepository customerRepository,
-            TurnsRepository turnsRepository) {
-        this.deliveryRepository = deliveryRepository;
-        this.customerRepository = customerRepository;
-        this.turnsRepository = turnsRepository;
-    }
-
+   public DeliveryServiceImpl(
+        DeliveryRepository deliveryRepository,
+        CustomerRepository customerRepository,
+        TurnsRepository turnsRepository,
+        ProductRepository productRepository) { 
+    this.deliveryRepository = deliveryRepository;
+    this.customerRepository = customerRepository;
+    this.turnsRepository = turnsRepository;
+    this.productRepository = productRepository; 
+}
     @Override
     public List<DeliveryResponseDTO> getEntities() {
         return deliveryRepository.findAll().stream()
@@ -38,25 +48,51 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
     }
 
     @Override
-    public DeliveryResponseDTO createEntity(DeliveryRequestDTO deliveryRequestDTO) {
-        if (deliveryRequestDTO.phoneNumber() == null) {
-            throw new IllegalArgumentException("El número de teléfono no puede ser nulo");
-        }
+public DeliveryResponseDTO createEntity(DeliveryRequestDTO deliveryRequestDTO) {
 
-        CustomerEntity customer = customerRepository.findById(deliveryRequestDTO.customerId())
-        .orElseThrow(() -> new RuntimeException("Cliente no encontrado con id: " + deliveryRequestDTO.customerId()));
+    DeliveryEntity delivery = new DeliveryEntity();
 
+    CustomerEntity customer = customerRepository.findByProfile_PhoneNumber(deliveryRequestDTO.phoneNumber())
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado con teléfono: " + deliveryRequestDTO.phoneNumber()));
 
-        TurnsEntity turn = turnsRepository.findById(deliveryRequestDTO.turnId())
-                .orElseThrow(() -> new RuntimeException("Turno no encontrado con id: " + deliveryRequestDTO.turnId()));
+    TurnsEntity turn = turnsRepository.findById(deliveryRequestDTO.turnId())
+            .orElseThrow(() -> new RuntimeException("Turno no encontrado con id: " + deliveryRequestDTO.turnId()));
 
-        DeliveryEntity delivery = DeliveryMapper.toEntity(deliveryRequestDTO);
-        delivery.setCustomer(customer);
-        delivery.setTurn(turn);
+    delivery.setCustomer(customer);
+    delivery.setTurn(turn);
+    delivery.setPaid(deliveryRequestDTO.paid());
+    delivery.setCreatedAt(LocalDateTime.now());
+    delivery.setStatus(DeliveryStatus.EN_PREPARACION);
+    delivery.setThankYouMessage("Gracias por su compra");
+    delivery.setAssignedSlot(deliveryRequestDTO.assignedSlot());
 
-        DeliveryEntity saved = deliveryRepository.save(delivery);
-        return DeliveryMapper.toDTO(saved);
+    BigDecimal total = BigDecimal.ZERO;
+    List<DetailDeliveryEntity> details = new ArrayList<>();
+
+    for (DeliveryDetailRequestDTO item : deliveryRequestDTO.details()) {
+        ProductEntity product = productRepository.findById(item.productId())
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + item.productId()));
+
+        DetailDeliveryEntity detail = new DetailDeliveryEntity();
+        detail.setProduct(product);
+        detail.setQuantity(item.quantity());
+        detail.setUnitPrice(product.getPrice());
+        detail.setDelivery(delivery);
+
+        BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(item.quantity()));
+        detail.setSubtotal(subtotal);
+
+        total = total.add(subtotal);
+        details.add(detail);
     }
+
+    delivery.setDetails(details);
+    delivery.setTotal(total);
+
+    DeliveryEntity saved = deliveryRepository.save(delivery);
+    return DeliveryMapper.toDTO(saved);
+}
+
 
     @Override
     public DeliveryResponseDTO getByID(Long id) {
@@ -64,6 +100,7 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
                 .orElseThrow(() -> new RuntimeException("Entrega no encontrada con id: " + id));
         return DeliveryMapper.toDTO(delivery);
     }
+
 
     @Override
     public DeliveryResponseDTO updateEntity(Long id, DeliveryRequestDTO deliveryRequestDTO) {
@@ -114,5 +151,6 @@ public class DeliveryServiceImpl implements InterfaceDeliveryService {
         return deliveries.stream()
                 .map(DeliveryMapper::toDTO)
                 .toList();
+    
     }
-}
+  } 

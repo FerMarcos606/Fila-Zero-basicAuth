@@ -4,18 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "${api-endpoint}/auth")
+@RequestMapping("${api-endpoint}/auth")
 public class AuthController {
 
-    private final TokenService tokenService;
-
-    public AuthController(TokenService tokenService) {
-        this.tokenService = tokenService;
+    @GetMapping("/login")
+    public String login(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuario no autenticado");
+        }
+        return "Usuario autenticado: " + authentication.getName();
     }
-
-    @PostMapping("/token")
-    public String token(Authentication authentication) {
-        return tokenService.generateToken(authentication);
-    }
-
 }
+

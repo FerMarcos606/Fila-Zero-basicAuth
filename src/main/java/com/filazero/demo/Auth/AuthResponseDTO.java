@@ -1,7 +1,7 @@
 package com.filazero.demo.Auth;
 
 
-public record AuthResponseDTO(String message, String email, String roles) {
+public record AuthResponseDTO(String username, String message) {
     
 }
 

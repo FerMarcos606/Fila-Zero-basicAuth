@@ -13,15 +13,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
-   
+
     private final CustomerRepository customerRepository;
 
-   @Override
+    @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    CustomerEntity customer = customerRepository.findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException("Customer not found with email: " + email));
-
-    return new SecurityUser(customer); // SecurityCustomer implements UserDetails
+        CustomerEntity customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Customer not found with email: " + email
+                ));
+        return new SecurityUser(customer);
+    }
 }
-
 

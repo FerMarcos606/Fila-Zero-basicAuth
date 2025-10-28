@@ -2,6 +2,6 @@ package com.filazero.demo.role.dtos;
 
 public record RoleResponseDTO(
 
-    Long id, 
+    Long id_role, 
     String name
 ) {}

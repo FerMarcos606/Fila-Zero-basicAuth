@@ -1,51 +1,35 @@
 package com.filazero.demo.delivery;
 
+import com.filazero.demo.customer.CustomerEntity;
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
+import com.filazero.demo.notifications.NotificationsEntity;
+import com.filazero.demo.queue.QueueEntity;
+import com.filazero.demo.turns.TurnsEntity;
+import com.filazero.demo.enums.DeliveryStatus;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.filazero.demo.customer.CustomerEntity;
-import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
-import com.filazero.demo.nofications.NotificationsEntity;
-import com.filazero.demo.turns.TurnsEntity;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
 @Entity
 @Table(name = "deliveries")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeliveryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private CustomerEntity customer;
-
-    @OneToOne
-    @JoinColumn(name = "turn_id", nullable = false)
-    private TurnsEntity turn;
-
-    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL)
-    private List<DetailDeliveryEntity> details;
-
-    @Enumerated(EnumType.STRING)
-    private DeliveryStatus status;
-
     private Boolean paid;
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime scheduledSlot;
+    private LocalDateTime assignedSlot;
 
     private LocalDateTime rescheduledSlot;
 
@@ -55,14 +39,32 @@ public class DeliveryEntity {
 
     private LocalDateTime cancelableUntil;
 
-    private LocalDateTime pickupTime;
-
-    private String confirmationCode;
-
     private String thankYouMessage;
 
-    @OneToMany(mappedBy = "delivery")
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus status;
+
+    @Column(nullable = false)
+    private BigDecimal total; // 💰 nuevo campo total del pedido
+
+    // Relaciones
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "turn_id")
+    private TurnsEntity turn;
+
+    // Relación con QueueEntity
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private QueueEntity queue;
+
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<NotificationsEntity> notifications;
+
+    @OneToMany(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DetailDeliveryEntity> details;
 }
 
 

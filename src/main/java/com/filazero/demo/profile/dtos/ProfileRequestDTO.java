@@ -6,6 +6,6 @@ public record ProfileRequestDTO(
     String secondSurname,
     String dni,
     String phoneNumber,
-    String avatar // ¿URL or base64?
+    String avatar // opcional
 ) {}
 

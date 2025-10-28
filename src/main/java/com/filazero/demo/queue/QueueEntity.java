@@ -1,44 +1,35 @@
 package com.filazero.demo.queue;
 
+import java.time.LocalDateTime;
 
-import com.filazero.demo.turns.TurnsEntity;
+import com.filazero.demo.delivery.DeliveryEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "queue")
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class QueueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // queue position
     @Column(nullable = false)
     private Integer position;
 
-    @OneToOne
-    @JoinColumn(name = "turn_id", nullable = false)
-    private TurnsEntity turn;
+    // estimated hour delivery retired
+    private java.time.LocalDateTime estimatedTime;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime deadline;
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Column(nullable = false)
-    private Boolean active;
-
-    @Column(nullable = true)
-    private Integer priority;
-
-    // Opcional: turns urgents
-    @Column(nullable = true)
-    private String status;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_id", nullable = false, unique = true)
+    private DeliveryEntity delivery;
 }

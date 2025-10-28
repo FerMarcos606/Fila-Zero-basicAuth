@@ -32,7 +32,7 @@ public class ProfileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_profile;
 
-    @Column(name = "avatar_image", nullable = true, length = 100000) // bytes
+    @Column(name = "avatar_image", nullable = true, length = 255) // name or URL
     private String avatar;
 
 

@@ -20,7 +20,7 @@ public class DeliveryMapper {
             entity.getId(),
             entity.getCustomer() != null ? entity.getCustomer().getId() : null,
             entity.getTurn() != null ? entity.getTurn().getId() : null,
-            null, // detalles, podés mapearlos si tenés DeliveryDetailDTO
+            null, 
             entity.getStatus(),
             entity.getPaid(),
             entity.getCreatedAt(),

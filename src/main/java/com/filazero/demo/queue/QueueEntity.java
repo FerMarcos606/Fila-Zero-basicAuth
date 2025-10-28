@@ -13,22 +13,26 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class QueueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // queue position
+    // posición actual en la cola
     @Column(nullable = false)
     private Integer position;
 
-    // estimated hour delivery retired
-    private java.time.LocalDateTime estimatedTime;
-
+    // hora en que se ingresó a la cola
     @Column(nullable = false)
-    private LocalDateTime deadline;
+    private LocalDateTime joinedAt;
 
+    // estado: activo, atendido, cancelado (opcional por ahora)
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    // 🔗 Relación con DeliveryEntity
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id", nullable = false, unique = true)
     private DeliveryEntity delivery;

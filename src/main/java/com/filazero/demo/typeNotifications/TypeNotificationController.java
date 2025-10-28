@@ -13,7 +13,7 @@ import com.filazero.demo.typeNotifications.dtos.TypeNotificationsResponseDTO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/type-notifications")
+@RequestMapping("${api-endpoint}/type-notifications")
 @RequiredArgsConstructor
 public class TypeNotificationController {
 

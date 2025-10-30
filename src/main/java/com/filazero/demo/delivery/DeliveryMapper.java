@@ -21,6 +21,7 @@ public class DeliveryMapper {
             entity.getCustomer() != null ? entity.getCustomer().getId() : null,
             entity.getTurn() != null ? entity.getTurn().getId() : null,
             null, 
+            entity.getTotal(),
             entity.getStatus(),
             entity.getPaid(),
             entity.getCreatedAt(),

@@ -3,18 +3,22 @@ package com.filazero.demo.customer;
 import com.filazero.demo.customer.dtos.CustomerRequestDTO;
 import com.filazero.demo.customer.dtos.CustomerResponseDTO;
 import com.filazero.demo.role.dtos.RoleResponseDTO;
+import com.filazero.demo.customer.CustomerController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CustomerControllerTest {
+@AutoConfigureMockMvc(addFilters = false)
+
+public class CustomerControllerTest {
 
     @Mock
     private CustomerServiceImpl customerService;

@@ -7,12 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
     // Usaremos 'email' como identificador único???
-        Optional<CustomerEntity> findByEmail(String email);   
-
-        List<CustomerEntity> findByProfile_Name(String name);
-        List<CustomerEntity> findByProfile_UsernameContainingIgnoreCase(String username);
-        Optional<CustomerEntity> findByProfile_PhoneNumber(String phoneNumber);
-
+         
+    Optional<CustomerEntity> findByEmail(String email);
+    Optional<CustomerEntity> findByProfile_PhoneNumber(String phoneNumber);
+    List<CustomerEntity> findByProfile_NameContainingIgnoreCase(String name);
 
 
     }

@@ -48,7 +48,7 @@ public class ProfileEntity {
     @Column(nullable = false, length = 150)
     private String secondSurname;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     private String phoneNumber;
 
      @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

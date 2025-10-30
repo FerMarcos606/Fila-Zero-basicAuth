@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements ICustomerService {
         if (customerRepository.findByEmail(dto.email()).isPresent()) {
             throw new IllegalArgumentException("Email ya registrado");
         }
-        if (!customerRepository.findByProfile_UsernameContainingIgnoreCase(dto.username()).isEmpty()) {
+        if (!customerRepository.findByProfile_NameContainingIgnoreCase(dto.username()).isEmpty()) {
             throw new IllegalArgumentException("Username ya registrado");
         }
 
@@ -76,10 +76,14 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public List<CustomerResponseDTO> searchByName(String name) {
-        return customerRepository.findByProfile_UsernameContainingIgnoreCase(name)
-                .stream()
-                .map(customerMapper::toResponseDTO)
-                .toList();
+        String q = name == null ? "" : name.toLowerCase();
+        return customerRepository.findAll().stream()
+            .filter(c -> {
+                if (c.getProfile() == null || c.getProfile().getFirstSurname() == null) return false;
+                return c.getProfile().getFirstSurname().toLowerCase().contains(q);
+            })
+            .map(customerMapper::toResponseDTO)
+            .toList();
     }
 
     @Override

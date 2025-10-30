@@ -15,6 +15,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    // Endpoint base para listar TODOS los productos
+    @GetMapping
+    public List<ProductsResponseDTO> getAllProducts() {
+        return productService.getEntities();
+    }
+
     @GetMapping("/available")
     public List<ProductsResponseDTO> getAvailableProducts() {
         return productService.getAvailableProducts();

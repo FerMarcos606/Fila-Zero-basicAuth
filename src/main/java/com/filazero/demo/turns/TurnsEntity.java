@@ -1,5 +1,6 @@
 package com.filazero.demo.turns;
 
+import com.filazero.demo.customer.CustomerEntity;
 import com.filazero.demo.delivery.DeliveryEntity;
 import com.filazero.demo.enums.TurnsStatus;
 
@@ -45,6 +46,11 @@ public class TurnsEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id", unique = true)
     private DeliveryEntity delivery;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
+
 
    
 }

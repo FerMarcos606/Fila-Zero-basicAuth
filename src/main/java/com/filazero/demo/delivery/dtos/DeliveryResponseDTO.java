@@ -1,5 +1,6 @@
 package com.filazero.demo.delivery.dtos;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public record DeliveryResponseDTO(
     Long customerId,
     Long turnId,
     List<DetailDeliveryResponseDTO> details,
+    BigDecimal total,
     DeliveryStatus status,
     Boolean paid,
     LocalDateTime createdAt,

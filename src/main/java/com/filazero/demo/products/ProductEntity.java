@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.filazero.demo.detailDelivery.DetailDeliveryEntity;
 
 @Entity
 @Table(name = "products")
@@ -32,4 +35,7 @@ public class ProductEntity {
 
     @Column(nullable = true)
     private Boolean available;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<DetailDeliveryEntity> details;
 }

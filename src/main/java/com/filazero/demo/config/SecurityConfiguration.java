@@ -17,25 +17,25 @@ import com.filazero.demo.security.JpaUserDetailsService;
 
 
 
+
 @Configuration
 @EnableWebSecurity
 
 public class SecurityConfiguration {
 
-   @Value("${api-endpoint}")
-
+    @Value("${api-endpoint}")
     String endpoint;
 
-    private JpaUserDetailsService jpaUserDetailsService;
+    private final JpaUserDetailsService customerUserDetailsService; 
 
-    public SecurityConfiguration(JpaUserDetailsService jpaUserDetailsService) {
-        this.jpaUserDetailsService = jpaUserDetailsService;
+    public SecurityConfiguration(JpaUserDetailsService customerUserDetailsService) {
+        this.customerUserDetailsService = customerUserDetailsService;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                 .httpBasic(withDefaults())
+                .cors(withDefaults())
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")
                         .disable())
@@ -43,46 +43,52 @@ public class SecurityConfiguration {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
+                       
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
                         
-                        .requestMatchers(HttpMethod.GET, endpoint + "/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET + "/users/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.PUT + "/users").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.DELETE + "/users/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.GET, endpoint + "/treatments/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(HttpMethod.POST, endpoint + "/treatments").hasRole("ADMIN")  
-                        .requestMatchers(HttpMethod.GET, endpoint + "/patients").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, endpoint + "/patients").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, endpoint + "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, endpoint + "/auth/login").permitAll() 
+                        .requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
                         
-                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/my-appointments").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/my-upcoming-appointments").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, endpoint + "/appointments").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, endpoint + "/appointments/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, endpoint + "/appointments/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(endpoint + "/profile/**").hasRole("CUSTOMER")
+                        
+                       
+                        .requestMatchers(HttpMethod.POST, endpoint + "/deliveries/**").hasRole("CUSTOMER")
+                       
+                        .requestMatchers(endpoint + "/detail-deliveries/**").hasRole("CUSTOMER")
+                        
+                     
+                        .requestMatchers(endpoint + "/turns/**").denyAll()
+                        .requestMatchers(endpoint + "/notifications/**").denyAll()
+                        .requestMatchers(endpoint + "/type-notifications/**").denyAll()
+                        .requestMatchers(HttpMethod.POST, endpoint + "/products").denyAll()
+                        .requestMatchers(HttpMethod.PUT, endpoint + "/products/**").denyAll()
+                        .requestMatchers(HttpMethod.DELETE, endpoint + "/products/**").denyAll()
 
+                        // 🔐 Todo lo demás requiere autenticación
                         .anyRequest().authenticated())
-                .userDetailsService(jpaUserDetailsService)
+                
+                //Define el servicio para cargar usuarios
+                .userDetailsService(customerUserDetailsService)
+                
+                // 🔑 Asegura Basic Auth nuevamente
                 .httpBasic(withDefaults())
+                
+                //  Configuración de Logout
                 .logout(logout -> logout
-                        .logoutUrl(endpoint + "/logout")
+                        .logoutUrl(endpoint + "/auth/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
+                
+                //  Gestión de Sesiones (IF_REQUIRED es el valor por defecto para Basic Auth)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
-
     }
     
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    
 }

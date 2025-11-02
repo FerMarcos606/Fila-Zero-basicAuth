@@ -40,7 +40,7 @@ public class NotificationsEntity {
 
     // type_notification_id: FK al tipo de notificación (TypeNotificationEntity)
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "type_notification_id", nullable = false)
+    @JoinColumn(name = "typeNotification_id", nullable = false)
     private TypeNotificationsEntity typeNotification;
 
     // Indica si ha sido leída

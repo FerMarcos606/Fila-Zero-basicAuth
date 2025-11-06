@@ -19,6 +19,7 @@ import com.filazero.demo.profile.dtos.ProfileResponseDTO;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("{api-endpoint}/profiles")
 @RequestMapping("${api-endpoint}/profile")
 // @Tag(name = "Profile", description = "Endpoints for managing user profiles") swagger...
 public class ProfileController {

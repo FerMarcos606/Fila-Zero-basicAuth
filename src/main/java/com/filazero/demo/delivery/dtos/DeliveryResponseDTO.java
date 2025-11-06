@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.filazero.demo.detailDelivery.dtos.DetailDeliveryResponseDTO;
+import com.filazero.demo.detailDelivery.dtos.DeliveryDetailResponseDTO;
 import com.filazero.demo.enums.DeliveryStatus;
 import com.filazero.demo.notifications.dtos.NotificationsResponseDTO;
 
@@ -12,7 +12,7 @@ public record DeliveryResponseDTO(
     Long id,
     Long customerId,
     Long turnId,
-    List<DetailDeliveryResponseDTO> details,
+    List<DeliveryDetailResponseDTO> details,
     BigDecimal total,
     DeliveryStatus status,
     Boolean paid,

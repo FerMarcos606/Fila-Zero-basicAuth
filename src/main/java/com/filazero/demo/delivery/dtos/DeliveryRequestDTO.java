@@ -14,6 +14,8 @@ public record DeliveryRequestDTO(
     
     @NotNull(message = "El customerId es obligatorio")
     Long customerId,
+    Long turnId,
+    List<DeliveryDetailRequestDTO> details,
 
     @NotBlank(message = "El teléfono es obligatorio")
     String phoneNumber, 

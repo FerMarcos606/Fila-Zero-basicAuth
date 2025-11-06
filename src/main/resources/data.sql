@@ -123,7 +123,7 @@ VALUES ('PAYMENT_FAILED',
 
 INSERT INTO typeNotifications (name, description, status) 
 VALUES ('ORDER_READY', 
-        'Tu pedido está listo para retirar. Acércate al mostrador.', 
+        'Tu pedido está listo para retirar. Lugar en cola: {position}',
         'Listo para retirar');
 
 INSERT INTO typeNotifications (name, description, status) 
@@ -160,3 +160,5 @@ INSERT INTO typeNotifications (name, description, status)
 VALUES ('ORDER_CANCELED', 
         'Tu pedido ha sido cancelado.', 
         'Pedido cancelado');
+
+        

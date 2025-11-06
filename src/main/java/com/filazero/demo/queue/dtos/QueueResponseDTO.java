@@ -7,6 +7,7 @@ public record QueueResponseDTO(
         Integer position,
         LocalDateTime joinedAt,
         Boolean active,
+        LocalDateTime estimatedTime, // Hora estimada de retiro
         Long deliveryId
 ) {}
 

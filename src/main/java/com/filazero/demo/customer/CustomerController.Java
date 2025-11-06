@@ -1,17 +1,29 @@
 package com.filazero.demo.customer;
 
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.filazero.demo.customer.dtos.CustomerRequestDTO;
 import com.filazero.demo.customer.dtos.CustomerResponseDTO;
 
 import lombok.RequiredArgsConstructor;
-import java.util.List;
+
+
 
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("${api-endpoint}/customer")  
+
 @RequiredArgsConstructor
+
 public class CustomerController {
 
     private final CustomerServiceImpl customerService;
@@ -22,7 +34,6 @@ public class CustomerController {
         return customerService.getEntities();
     }
 
-    // GET → cliente por id
     @GetMapping("/{id}")
     public CustomerResponseDTO getById(@PathVariable Long id) {
         return customerService.getByID(id);
@@ -34,11 +45,10 @@ public class CustomerController {
         return customerService.createEntity(dto);
     }
 
-    // PUT → actualizar cliente
-    @PutMapping("/{id}")
-    public CustomerResponseDTO update(@PathVariable Long id, @RequestBody CustomerRequestDTO dto) {
-        return customerService.updateEntity(id, dto);
-    }
+//     // PUT → actualizar cliente
+//     @PutMapping("/CustomerController cannot be resolved to a type en el CustomerControllerTest
+// Entity(id, dto);
+//     }
 
     // DELETE → eliminar cliente
     @DeleteMapping("/{id}")
@@ -58,3 +68,4 @@ public class CustomerController {
         return customerService.getByEmail(email);
     }
 }
+

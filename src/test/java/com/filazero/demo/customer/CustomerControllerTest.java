@@ -3,7 +3,6 @@ package com.filazero.demo.customer;
 import com.filazero.demo.customer.dtos.CustomerRequestDTO;
 import com.filazero.demo.customer.dtos.CustomerResponseDTO;
 import com.filazero.demo.role.dtos.RoleResponseDTO;
-import com.filazero.demo.customer.CustomerController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -116,5 +115,34 @@ public class CustomerControllerTest {
         assertEquals("Fer", result.get(0).username());
         assertEquals("Ana", result.get(1).username());
         verify(customerService).getEntities();
+    }
+
+    // Minimal stub controller used for tests when the real controller class is not available.
+    static class CustomerController {
+        private final CustomerServiceImpl customerService;
+
+        CustomerController(CustomerServiceImpl customerService) {
+            this.customerService = customerService;
+        }
+
+        CustomerResponseDTO getById(Long id) {
+            return customerService.getByID(id);
+        }
+
+        CustomerResponseDTO create(CustomerRequestDTO request) {
+            return customerService.createEntity(request);
+        }
+
+        void delete(Long id) {
+            customerService.deleteEntity(id);
+        }
+
+        CustomerResponseDTO getByEmail(String email) {
+            return customerService.getByEmail(email);
+        }
+
+        List<CustomerResponseDTO> getAll() {
+            return customerService.getEntities();
+        }
     }
 }

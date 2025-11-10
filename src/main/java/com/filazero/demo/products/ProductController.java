@@ -15,6 +15,16 @@ public class ProductController {
         this.productService = productService;
     }
 
+     @GetMapping
+    public List<ProductsResponseDTO> getAllProducts() {
+        return productService.getEntities(); // Asume que tienes este método
+    }
+ 
+    @GetMapping("/{id}")
+    public ProductsResponseDTO getProductById(@PathVariable Long id) {
+        return productService.getByID(id); // Asume que tienes este método
+    }
+
     @GetMapping("/available")
     public List<ProductsResponseDTO> getAvailableProducts() {
         return productService.getAvailableProducts();

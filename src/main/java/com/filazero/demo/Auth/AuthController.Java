@@ -4,18 +4,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "${api-endpoint}/auth")
+@RequestMapping("${api-endpoint}/auth")
 public class AuthController {
 
-    private final TokenService tokenService;
-
-    public AuthController(TokenService tokenService) {
-        this.tokenService = tokenService;
+    @GetMapping("/login")
+    public String login(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "No se detectaron credenciales de autenticación válidas. Por favor, use Basic Auth.";
+        }
+        
+        return "Usuario autenticado exitosamente: " + authentication.getName() 
+                + " con roles: " + authentication.getAuthorities();
     }
-
-    @PostMapping("/token")
-    public String token(Authentication authentication) {
-        return tokenService.generateToken(authentication);
-    }
-
 }

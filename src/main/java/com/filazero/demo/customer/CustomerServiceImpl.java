@@ -1,6 +1,7 @@
 package com.filazero.demo.customer;
 
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -37,9 +38,11 @@ public class CustomerServiceImpl implements ICustomerService {
         if (customerRepository.findByEmail(dto.email()).isPresent()) {
             throw new IllegalArgumentException("Email ya registrado");
         }
-        if (!customerRepository.findByProfile_UsernameContainingIgnoreCase(dto.username()).isEmpty()) {
-            throw new IllegalArgumentException("Username ya registrado");
-        }
+            // 🔹 Si querés validar el nombre del perfil en vez del username
+        if (!customerRepository.findByProfile_NameContainingIgnoreCase(dto.username()).isEmpty()) {
+        throw new IllegalArgumentException("Nombre de usuario ya registrado");
+    }
+
 
         RoleEntity role = roleRepository.findById(dto.roleId())
                 .orElseThrow(() -> new EntityNotFoundException("Role not found"));
@@ -74,9 +77,10 @@ public class CustomerServiceImpl implements ICustomerService {
         customerRepository.deleteById(id);
     }
 
+    // ✅ Buscar por nombre (ya que username no existe en Profile)
     @Override
     public List<CustomerResponseDTO> searchByName(String name) {
-        return customerRepository.findByProfile_UsernameContainingIgnoreCase(name)
+        return customerRepository.findByProfile_NameContainingIgnoreCase(name)
                 .stream()
                 .map(customerMapper::toResponseDTO)
                 .toList();
@@ -96,5 +100,3 @@ public class CustomerServiceImpl implements ICustomerService {
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
     }
 }
-
-

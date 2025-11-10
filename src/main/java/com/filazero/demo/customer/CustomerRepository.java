@@ -9,8 +9,8 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
     // Usaremos 'email' como identificador único???
         Optional<CustomerEntity> findByEmail(String email);   
 
-        List<CustomerEntity> findByProfile_Name(String name);
-        List<CustomerEntity> findByProfile_UsernameContainingIgnoreCase(String username);
+        List<CustomerEntity> findByProfile_NameContainingIgnoreCase(String name);
+
         Optional<CustomerEntity> findByProfile_PhoneNumber(String phoneNumber);
 
 

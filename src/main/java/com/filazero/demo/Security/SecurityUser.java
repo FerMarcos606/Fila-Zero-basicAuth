@@ -3,18 +3,23 @@ package com.filazero.demo.security;
 import com.filazero.demo.customer.CustomerEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 public class SecurityUser implements UserDetails {
 
     private final CustomerEntity customer;
 
+    // Modficar cuando añade ADMIN
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null; // o devolver roles si tenés
+        String roleName = customer.getRole().getName();
+       return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
+
     }
 
     @Override

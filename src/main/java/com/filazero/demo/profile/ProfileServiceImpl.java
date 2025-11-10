@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
-import com.filazero.demo.implementations.IService;
 import com.filazero.demo.profile.dtos.ProfileRequestDTO;
 import com.filazero.demo.profile.dtos.ProfileResponseDTO;
 
 @Service
-public class ProfileServiceImpl implements IService<ProfileResponseDTO, ProfileRequestDTO> {
+public class ProfileServiceImpl implements IProfileService {
 
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
@@ -50,7 +48,8 @@ public class ProfileServiceImpl implements IService<ProfileResponseDTO, ProfileR
 
     @Override
     public List<ProfileResponseDTO> getEntities() {
-        return profileRepository.findAll().stream()
+        return profileRepository.findAll()
+            .stream()
             .map(profileMapper::toDTO)
             .collect(Collectors.toList());
     }

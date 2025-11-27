@@ -7,31 +7,41 @@ INSERT INTO roles (name) VALUES ('ROLE_CUSTOMER');
 -- 2. CUSTOMER (usuarios de prueba)
 -- =====================================================
 -- Password para todos: "password123"
--- Hash BCrypt: $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm
+-- Hash BCrypt: $2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC 
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('juan.perez', 'juan.perez@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('juan.perez', 'juan.perez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC' 
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('maria.garcia', 'maria.garcia@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('maria.garcia', 'maria.garcia@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC'  
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('carlos.lopez', 'carlos.lopez@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('carlos.lopez', 'carlos.lopez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC'  
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('ana.martinez', 'ana.martinez@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('ana.martinez', 'ana.martinez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC' 
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('luis.fernandez', 'luis.fernandez@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('luis.fernandez', 'luis.fernandez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC' 
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
 
-INSERT INTO customer (username, email, password, role_id) 
-VALUES ('jose.lopez', 'jose.lopez@example.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhkm', 
-        (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+-- INSERT INTO customer (username, email, password, role_id) 
+-- VALUES ('jose.lopez', 'jose.lopez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC' 
+--         (SELECT id_role FROM roles WHERE name = 'ROLE_CUSTOMER'));
+
+INSERT INTO customer (username, email, password, role_id)
+VALUES 
+('juan.perez', 'juan.perez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1),
+('maria.garcia', 'maria.garcia@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1),
+('carlos.lopez', 'carlos.lopez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1),
+('ana.martinez', 'ana.martinez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1),
+('luis.fernandez', 'luis.fernandez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1),
+('jose.lopez', 'jose.lopez@example.com', '$2a$10$sRbPbq6Bz9Sg9KVD2R8enexL3eZtabjtfbB5/zfFLMIxE.5/dIzbC', 1);
+
 
 -- =====================================================
 -- 3. PROFILE

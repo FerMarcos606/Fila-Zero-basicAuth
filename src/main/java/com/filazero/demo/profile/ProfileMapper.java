@@ -48,8 +48,7 @@ public class ProfileMapper {
         entity.setAvatar(dto.avatar());
     }
 
-    public ProfileResponseDTO toResponseDTO(ProfileEntity profile) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toResponseDTO'");
-    }
+    public ProfileResponseDTO toResponseDTO(ProfileEntity entity) {
+    return toDTO(entity);
+}
 }
